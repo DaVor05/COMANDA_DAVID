@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-sqw!kbdb@z_1u64*mybxsda0io*(yx7ohbi-283%l#z6(o!-6b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["https://gvomer1.pythonanywhere.com"]
 
 
 # Application definition
@@ -56,7 +56,7 @@ ROOT_URLCONF = 'core_main_test.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ["templates"],
+        'DIRS': [ BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
