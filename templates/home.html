@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Equipo —   NextOrder</title>
+  <meta name="description" content="Integrantes del proyecto de Mejora Continua - Sistema de Comandas (Universidad CESUN)" />
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-b from-gray-50 to-white text-gray-800 antialiased">
+  <div class="max-w-4xl mx-auto px-6 py-10">
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-extrabold">Equipo — NextOrder</h1>
+        <p class="text-sm text-gray-600">Sistema de comandas — Universidad CESUN</p>
+      </div>
+      <nav class="space-x-4">
+        <a href="{% url 'index' %}" class="text-sm font-medium hover:underline">Inicio</a>
+        <a href="{% url 'comandas' %}" class="text-sm font-medium hover:underline">Comandas</a> 
+        <a href="{% url 'home' %}" class="text-sm font-medium hover:underline">Equipo</a>
+        </nav>
+    </header>
+
+    <main class="grid gap-6">
+      <section class="bg-white rounded-2xl p-6 shadow-md">
+        <h2 class="text-lg font-semibold mb-4">Integrantes</h2>
+
+        <div class="space-y-4">
+          <!-- Yahir -->
+          <div class="flex items-center justify-between gap-4 p-4 border rounded-lg">
+            <div>
+              <h3 class="font-medium">Yahir Méndez Salvador</h3>
+              <p class="text-sm text-gray-600">Matrícula: <span class="font-medium">23030464</span></p>
+              <p class="text-sm text-gray-600 mt-1">Correo: <a href="mailto:yahir.mendezsalvador@cesunbc.edu.mx" class="text-blue-600 hover:underline">yahir.mendezsalvador@cesunbc.edu.mx</a></p>
+            </div>
+          </div>
+
+          <!-- Brandon -->
+          <div class="flex items-center justify-between gap-4 p-4 border rounded-lg">
+            <div>
+              <h3 class="font-medium">Brandon Rodríguez Villanueva</h3>
+              <p class="text-sm text-gray-600">Matrícula: <span class="font-medium">23030053</span></p>
+              <p class="text-sm text-gray-600 mt-1">Correo: <a href="mailto:brandon.rodriguezvillanueva@cesunbc.edu.mx" class="text-blue-600 hover:underline">brandon.rodriguezvillanueva@cesunbc.edu.mx</a></p>
+            </div>
+          </div>
+
+          <!-- David (you) -->
+          <div class="flex items-center justify-between gap-4 p-4 border rounded-lg bg-gradient-to-r from-white via-gray-50 to-white">
+            <div>
+              <h3 class="font-medium">David Hernández Vidriales <span class="text-xs text-gray-500">(tú)</span></h3>
+              <p class="text-sm text-gray-600">Matrícula: <span class="font-medium">23030518</span></p>
+              <p class="text-sm text-gray-600 mt-1">Correo: <a href="mailto:david.hernandezvidriales@cesunbc.edu.mx" class="text-blue-600 hover:underline">david.hernandezvidriales@cesunbc.edu.mx</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="bg-white rounded-2xl p-6 shadow-md">
+        <h3 class="text-lg font-semibold">Universidad</h3>
+        <p class="mt-2 text-gray-700">Universidad CESUN</p>
+      </section>
+    </main>
+
+    <footer class="text-sm text-gray-600 mt-6 text-center">
+      <p>© Universidad CESUN — Proyecto Mejora Continua</p>
+    </footer>
+  </div>
+
+  <script>
+    function copyToClipboard(text){
+      navigator.clipboard?.writeText(text).then(()=>{
+        const original = event?.target?.textContent;
+        // feedback breve
+        const btn = event?.target;
+        if(btn){
+          const prev = btn.textContent;
+          btn.textContent = 'Copiado';
+          setTimeout(()=> btn.textContent = prev, 1200);
+        }
+      }).catch(()=> alert('No se pudo copiar. Copia manualmente el correo.'));
+    }
+  </script>
+</body>
+</html>
