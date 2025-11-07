@@ -6,7 +6,7 @@ def index(request):
 
 
 
-def home(request):
+def comandas(request):
     return render(request, 'comandas.html')
 
 
