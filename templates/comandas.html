@@ -1,11 +1,443 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>XD</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NextOrder - Sistema de Comandas</title>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+
+        :root {
+            --color-primario: #e67e22; /* Naranja (Acento) */
+            --color-secundario: #2c3e50; /* Gris/Petróleo Oscuro (Fondo detalle) */
+            --color-terciario: #34495e; /* Gris/Petróleo más claro (Header) */
+            --color-fondo: #ecf0f1; /* Fondo general gris claro */
+            --color-tarjeta: #ffffff; /* Blanco de la tarjeta */
+            --color-texto-oscuro: #2c3e50;
+            --color-texto-claro: #ffffff;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lato', sans-serif;
+            background-color: var(--color-fondo);
+            height: 100vh;
+            overflow: hidden; /* Evita el scroll de la página principal */
+        }
+
+        .app-container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        /* --- Encabezado Superior (CON NAVEGACIÓN) --- */
+        .app-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: var(--color-terciario);
+            color: var(--color-texto-claro);
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            z-index: 10;
+        }
+
+        .header-left .logo-text {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+        
+        /* --- ESTILOS PARA TU NAVEGACIÓN AÑADIDA --- */
+        .header-nav nav a {
+            color: var(--color-texto-claro);
+            text-decoration: none;
+            font-size: 0.9rem; /* Similar a text-sm */
+            font-weight: 500; /* Similar a font-medium */
+            margin: 0 0.75rem; /* Similar a space-x-4 */
+        }
+        .header-nav nav a:hover {
+            text-decoration: underline;
+        }
+        /* --- FIN DE ESTILOS AÑADIDOS --- */
+
+        .header-right .user-icon {
+            width: 32px;
+            height: 32px;
+            background-color: var(--color-primario);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        /* --- Contenido Principal (2 columnas) --- */
+        .app-content {
+            display: flex;
+            flex: 1; /* Ocupa todo el espacio restante */
+            overflow: hidden;
+        }
+
+        /* --- Columna Izquierda: Pedidos Activos --- */
+        .order-list-panel {
+            flex: 1;
+            background-color: var(--color-fondo);
+            padding: 20px;
+            overflow-y: auto; /* Permite scroll solo en esta columna */
+            border-right: 1px solid #bdc3c7;
+        }
+
+        .order-list-panel h2 {
+            color: var(--color-texto-oscuro);
+            margin-top: 0;
+        }
+
+        .order-card {
+            background-color: var(--color-tarjeta);
+            border: 1px solid #bdc3c7;
+            border-left: 5px solid var(--color-primario); /* Acorde al diseño */
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .order-card.active {
+            border-left-width: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+
+        .order-card h3 {
+            margin: 0 0 5px 0;
+            color: var(--color-texto-oscuro);
+        }
+
+        .order-card p {
+            margin: 0 0 10px 0;
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            background-color: var(--color-primario);
+            color: var(--color-texto-claro);
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 12px;
+            display: inline-block;
+        }
+
+        /* --- Columna Derecha: Detalles del Pedido --- */
+        .order-details-panel {
+            flex: 1;
+            background-color: var(--color-secundario);
+            color: var(--color-texto-claro);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .order-details-panel h2 {
+            margin-top: 0;
+            border-bottom: 1px solid var(--color-terciario);
+            padding-bottom: 10px;
+        }
+
+        .order-details-panel .mesero-info {
+            font-size: 1rem;
+            color: #bdc3c7;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .item-list {
+            flex: 1; /* Ocupa espacio para empujar el teclado hacia abajo */
+            min-height: 150px; /* Evita que colapse */
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--color-terciario);
+        }
+
+        .item .item-name {
+            font-weight: 400;
+        }
+
+        .item .item-price {
+            font-weight: 700;
+        }
+
+        /* --- ESTILOS PARA LA CALCULADORA FUNCIONAL --- */
+        .keypad-display-container {
+            margin-bottom: 15px; /* Espacio antes del teclado */
+        }
+
+        #keypad-display {
+            width: 100%;
+            box-sizing: border-box; /* Incluye padding en el ancho */
+            background-color: var(--color-fondo); /* Fondo claro */
+            border: 1px solid var(--color-terciario);
+            border-radius: 5px;
+            padding: 15px;
+            font-size: 2rem;
+            font-family: 'Lato', sans-serif;
+            text-align: right;
+            color: var(--color-texto-oscuro);
+        }
+        /* --- FIN DE ESTILOS DE CALCULADORA --- */
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .keypad button {
+            background-color: var(--color-terciario);
+            color: var(--color-texto-claro);
+            border: none;
+            border-radius: 5px;
+            font-size: 1.5rem;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .keypad button:hover {
+            background-color: #526d8a;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .action-buttons button {
+            border: none;
+            border-radius: 5px;
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-pay {
+            background-color: var(--color-primario);
+            color: var(--color-texto-claro);
+        }
+
+        .btn-send {
+            background-color: var(--color-texto-claro);
+            color: var(--color-secundario);
+        }
+        
+        .action-buttons button:hover {
+            opacity: 0.9;
+        }
+
+        .totals {
+            margin-top: 20px;
+            text-align: right;
+        }
+
+        .totals h3 {
+            font-size: 1.8rem;
+            margin: 0;
+        }
+
+    </style>
 </head>
 <body>
-  <h1>Hola a todos</h1>
+
+    <div class="app-container">
+        
+        <header class="app-header">
+            <div class="header-left">
+                <span class="logo-text">NextOrder</span>
+            </div>
+            
+            <div class="header-nav">
+                <nav class="space-x-4">
+                  <a href="{% url 'index' %}" class="text-sm font-medium hover:underline">Inicio</a>
+                  <a href="{% url 'comandas' %}" class="text-sm font-medium hover:underline">Comandas</a> 
+                  <a href="{% url 'home' %}" class="text-sm font-medium hover:underline">Equipo</a>
+                </nav>
+            </div>
+            <div class="header-right">
+                <div class="user-icon" title="Perfil de Usuario"></div>
+            </div>
+        </header>
+
+        <main class="app-content">
+
+            <section class="order-list-panel">
+                <h2>Pedidos Activos</h2>
+
+                <div class="order-card active" data-mesa="Mesa 5A" data-mesero="Sofía" data-items='[{"name": "1x Hamburguesa Clásica", "price": 120.00}, {"name": "1x Agua de Jamaica", "price": 30.00}]' data-total="150.00">
+                    <h3>Mesa 5A</h3>
+                    <p>Mesero: Sofía</p>
+                    <p>1x Hamburguesa Clásica, 1x Agua de Jamaica</p>
+                    <span class="status-badge">En Proceso</span>
+                </div>
+
+                <div class="order-card" data-mesa="Mesa 8A" data-mesero="David" data-items='[{"name": "2x Tacos de Pastor", "price": 80.00}, {"name": "1x Ensalada Cesar", "price": 110.00}, {"name": "2x Refresco", "price": 60.00}]' data-total="250.00">
+                    <h3>Mesa 8A</h3>
+                    <p>Mesero: David</p>
+                    <p>2x Tacos de Pastor, 1x Ensalada Cesar...</p>
+                    <span class="status-badge">En Proceso</span>
+                </div>
+
+                <div class="order-card" data-mesa="Mesa 2B (Terraza)" data-mesero="Yahir" data-items='[{"name": "1x Ribeye (Medio)", "price": 350.00}]' data-total="350.00">
+                    <h3>Mesa 2B (Terraza)</h3>
+                    <p>Mesero: Yahir</p>
+                    <p>1x Ribeye (Medio)</p>
+                    <span class="status-badge">En Proceso</span>
+                </div>
+
+            </section>
+
+            <section class="order-details-panel">
+                
+                <h2 id="detalle-mesa">Detalle Mesa 5A</h2>
+                <p class="mesero-info" id="detalle-mesero">Mesero: Sofía</p>
+
+                <div class="item-list" id="detalle-items">
+                    </div>
+
+                <div class="keypad-display-container">
+                    <input type="text" id="keypad-display" value="0" readonly>
+                </div>
+
+                <div class="keypad">
+                    <button class="keypad-btn">1</button>
+                    <button class="keypad-btn">2</button>
+                    <button class="keypad-btn">3</button>
+                    <button class="keypad-btn">4</button>
+                    <button class="keypad-btn">5</button>
+                    <button class="keypad-btn">6</button>
+                    <button class="keypad-btn">7</button>
+                    <button class="keypad-btn">8</button>
+                    <button class="keypad-btn">9</button>
+                    <button class="keypad-btn">C</button> <button class="keypad-btn">0</button>
+                    <button class="keypad-btn">.</button>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="btn-pay" id="btn-pagar">Pagar</button>
+                    <button class="btn-send" id="btn-enviar">Enviar a Cocina</button>
+                </div>
+
+                <div class="totals">
+                    <h3 id="detalle-total">S/ 150.00</h3>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const orderCards = document.querySelectorAll(".order-card");
+            const detalleMesa = document.getElementById("detalle-mesa");
+            const detalleMesero = document.getElementById("detalle-mesero");
+            const detalleItemsList = document.getElementById("detalle-items");
+            const detalleTotal = document.getElementById("detalle-total");
+            
+            // --- LÓGICA DE CALCULADORA ---
+            const keypadDisplay = document.getElementById("keypad-display");
+            
+            document.querySelectorAll(".keypad-btn").forEach(btn => {
+                btn.addEventListener("click", () => {
+                    const key = btn.textContent;
+                    let currentValue = keypadDisplay.value;
+
+                    if (key === "C") {
+                        keypadDisplay.value = "0"; // Limpiar
+                    } else if (key === ".") {
+                        if (!currentValue.includes(".")) { // Prevenir múltiples puntos
+                            keypadDisplay.value = currentValue + ".";
+                        }
+                    } else { // Es un número
+                        if (currentValue === "0") {
+                            keypadDisplay.value = key; // Reemplaza el 0 inicial
+                        } else {
+                            keypadDisplay.value = currentValue + key;
+                        }
+                    }
+                });
+            });
+
+            // --- LÓGICA DE TARJETAS DE PEDIDO ---
+            function actualizarDetalles(card) {
+                orderCards.forEach(c => c.classList.remove("active"));
+                card.classList.add("active");
+
+                const mesa = card.dataset.mesa;
+                const mesero = card.dataset.mesero;
+                const items = JSON.parse(card.dataset.items);
+                const total = card.dataset.total;
+
+                detalleMesa.textContent = `Detalle ${mesa}`;
+                detalleMesero.textContent = `Mesero: ${mesero}`;
+                detalleTotal.textContent = `S/ ${total}`;
+
+                // Rellenar lista de artículos
+                detalleItemsList.innerHTML = ""; 
+                items.forEach(item => {
+                    const itemElement = document.createElement("div");
+                    itemElement.classList.add("item");
+                    itemElement.innerHTML = `
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-price">S/ ${item.price.toFixed(2)}</span>
+                    `;
+                    detalleItemsList.appendChild(itemElement);
+                });
+                
+                // Poner el total del pedido en la calculadora para pagar rápido
+                keypadDisplay.value = total; 
+            }
+
+            orderCards.forEach(card => {
+                card.addEventListener("click", () => {
+                    actualizarDetalles(card);
+                });
+            });
+
+            // Cargar los detalles del primer pedido al iniciar
+            const primerPedidoActivo = document.querySelector(".order-card.active");
+            if (primerPedidoActivo) {
+                actualizarDetalles(primerPedidoActivo);
+            }
+
+            // --- Simulación de botones de acción ---
+            document.getElementById("btn-pagar").addEventListener("click", () => {
+                const amount = keypadDisplay.value;
+                // Ahora la alerta usa el valor de la calculadora
+                alert(`Prototipo: Iniciar flujo de 'Pagar' con S/ ${amount}`);
+                keypadDisplay.value = "0"; // Resetea la calculadora
+            });
+
+            document.getElementById("btn-enviar").addEventListener("click", () => {
+                alert("Prototipo: 'Enviar a Cocina' (Actualizar o añadir items)");
+            });
+        });
+    </script>
+
 </body>
 </html>
