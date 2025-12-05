@@ -1,68 +1,69 @@
-<!doctype html>
-<html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NextOrder — Sistema de Comandas</title>
-  <meta name="description" content="Resumen del proyecto: Mejora continua para sistema de comandas en restaurante" />
-  <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gradient-to-b from-gray-50 to-white text-gray-800 antialiased">
-  <div class="max-w-5xl mx-auto px-6 py-10">
-    <header class="flex items-center justify-between mb-8">
-      <div>
-        <h1 class="text-2xl font-extrabold">NextOrder — Sistema de Comandas</h1>
-        <p class="text-sm text-gray-600">Optimización del flujo entre servicio y cocina para reducir errores y tiempos</p>
-      </div>
-      <nav class="space-x-4">
-        <a href="{% url 'index' %}" class="text-sm font-medium hover:underline">Inicio</a>
-        <a href="{% url 'comandas' %}" class="text-sm font-medium hover:underline">Comandas</a> 
-        <a href="{% url 'home' %}" class="text-sm font-medium hover:underline">Equipo</a>
-      </nav>
-    </header>
-
-    <main>
-      <!-- Hero -->
-      <section id="inicio" class="bg-white rounded-2xl p-6 shadow-md mb-6">
-        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h2 class="text-xl font-semibold">Propósito y justificación</h2>
-            <p class="mt-2 text-gray-700">Optimizar el sistema de comandas para agilizar la comunicación entre servicio y cocina, reducir errores y mejorar la experiencia de clientes y personal operativo.</p>
-          </div>
+  <!doctype html>
+  <html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NextOrder — Sistema de Comandas</title>
+    <meta name="description" content="Resumen del proyecto: Mejora continua para sistema de comandas en restaurante" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gradient-to-b from-gray-50 to-white text-gray-800 antialiased">
+    <div class="max-w-5xl mx-auto px-6 py-10">
+      <header class="flex items-center justify-between mb-8">
+        <div>
+          <h1 class="text-2xl font-extrabold">NextOrder — Sistema de Comandas</h1>
+          <p class="text-sm text-gray-600">Optimización del flujo entre servicio y cocina para reducir errores y tiempos</p>
         </div>
+        <nav class="space-x-4">
+          <a href="{% url 'index' %}" class="text-sm font-medium hover:underline">Inicio</a>
+          <a href="{% url 'comandas' %}" class="text-sm font-medium hover:underline">Comandas</a> 
+          <a href="{% url 'home' %}" class="text-sm font-medium hover:underline">Equipo</a>
+           <a href="{% url 'menu' %}" class="text-sm font-medium hover:underline">MENU</a>
+        </nav>
+      </header>
 
-        <div id="summary" class="mt-4 text-gray-700">
-            <ul class="list-disc list-inside space-y-1">
-            <li><strong>Reducción de errores:</strong> Automatización y estandarización para minimizar equivocaciones.</li>
-            <li><strong>Mayor velocidad de atención:</strong> Disminución de tiempos de espera y reducción de costos innecesarios.</li>
-            <li><strong>Mejor control operativo:</strong> Monitoreo en tiempo real de pedidos y desempeño.</li>
-            <li><strong>Adaptabilidad tecnológica:</strong> Integración de herramientas digitales escalables.</li>
-            </ul>
-        </div>
-      </section>
-
-      <!-- Descripción -->
-      <section class="bg-white rounded-2xl p-6 shadow-md mb-6">
-        <h3 class="text-lg font-semibold">Descripción del proyecto</h3>
-        <p class="mt-3 text-gray-700">Desarrollaremos un sistema digital de comandas implementado gradualmente con enfoque de mejora continua: cada versión incorporará mejoras en usabilidad, trazabilidad e integración con cocina y POS.</p>
-      </section>
-
-      <!-- Entregables -->
-      <section id="entregables" class="bg-white rounded-2xl p-6 shadow-md mb-6">
-        <h3 class="text-lg font-semibold">Entregables (por versiones)</h3>
-        <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div class="p-4 border rounded-lg md:col-span-2">
-            <h4 class="font-medium">Versión Prototipo</h4>
-            <p class="text-sm text-gray-600 mt-1">Prototipo funcional con flujo básico de comandas.</p>
+      <main>
+        <!-- Hero -->
+        <section id="inicio" class="bg-white rounded-2xl p-6 shadow-md mb-6">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h2 class="text-xl font-semibold">Propósito y justificación</h2>
+              <p class="mt-2 text-gray-700">Optimizar el sistema de comandas para agilizar la comunicación entre servicio y cocina, reducir errores y mejorar la experiencia de clientes y personal operativo.</p>
+            </div>
           </div>
 
-          <div class="p-4 border rounded-lg md:col-span-2">
-            <h4 class="font-medium">Versión final</h4>
-            <p class="text-sm text-gray-600 mt-1">Sistema estable, documentado y listo para despliegue.</p>
+          <div id="summary" class="mt-4 text-gray-700">
+              <ul class="list-disc list-inside space-y-1">
+              <li><strong>Reducción de errores:</strong> Automatización y estandarización para minimizar equivocaciones.</li>
+              <li><strong>Mayor velocidad de atención:</strong> Disminución de tiempos de espera y reducción de costos innecesarios.</li>
+              <li><strong>Mejor control operativo:</strong> Monitoreo en tiempo real de pedidos y desempeño.</li>
+              <li><strong>Adaptabilidad tecnológica:</strong> Integración de herramientas digitales escalables.</li>
+              </ul>
           </div>
-        </div>
-      </section>
-    </main>
-  </div>
-</body>
-</html>
+        </section>
+
+        <!-- Descripción -->
+        <section class="bg-white rounded-2xl p-6 shadow-md mb-6">
+          <h3 class="text-lg font-semibold">Descripción del proyecto</h3>
+          <p class="mt-3 text-gray-700">Desarrollaremos un sistema digital de comandas implementado gradualmente con enfoque de mejora continua: cada versión incorporará mejoras en usabilidad, trazabilidad e integración con cocina y POS.</p>
+        </section>
+
+        <!-- Entregables -->
+        <section id="entregables" class="bg-white rounded-2xl p-6 shadow-md mb-6">
+          <h3 class="text-lg font-semibold">Entregables (por versiones)</h3>
+          <div class="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="p-4 border rounded-lg md:col-span-2">
+              <h4 class="font-medium">Versión Prototipo</h4>
+              <p class="text-sm text-gray-600 mt-1">Prototipo funcional con flujo básico de comandas.</p>
+            </div>
+
+            <div class="p-4 border rounded-lg md:col-span-2">
+              <h4 class="font-medium">Versión final</h4>
+              <p class="text-sm text-gray-600 mt-1">Sistema estable, documentado y listo para despliegue.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </body>
+  </html>

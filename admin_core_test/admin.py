@@ -1,7 +1,8 @@
+# admin_core_test/admin.py
 from django.contrib import admin
-from .models import *
+from .models import Categoria, Producto, Pedido, PedidoItem
 
-admin.site.register(Comanda)
-admin.site.register(Mesa)
-admin.site.register(Pago)
-admin.site.register(Cliente)
+admin.site.register(Categoria)
+admin.site.register(Producto)
+admin.site.register(Pedido)
+admin.site.register(PedidoItem)

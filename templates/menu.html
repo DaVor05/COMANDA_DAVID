@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MENU — NextOrder</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+{% load static %}
+<body class="bg-gradient-to-b from-gray-50 to-white text-gray-800 antialiased">
+  <div class="max-w-6xl mx-auto px-6 py-10">
+    <header class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="text-2xl font-extrabold">Catálogo de Menú</h1>
+        <p class="text-sm text-gray-600">Selecciona productos para la comanda</p>
+      </div>
+
+      <nav class="space-x-4">
+        <a href="{% url 'home' %}" class="text-sm font-medium hover:underline">HOME</a>
+        <a href="{% url 'index' %}" class="text-sm font-medium hover:underline">INDEX</a>
+        <a href="{% url 'comandas' %}" class="text-sm font-medium hover:underline">COMANDA</a>
+        <a href="{% url 'menu' %}" class="text-sm font-medium hover:underline">MENU</a>
+      </nav>
+    </header>
+
+    <main class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <!-- Columna de categorías + productos -->
+      <section class="md:col-span-2 space-y-6">
+        {% for categoria in categorias %}
+        <div class="bg-white rounded-2xl p-4 shadow">
+          <h2 class="text-lg font-semibold mb-3">{{ categoria.nombre }}</h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {% for producto in categoria.productos.all %}
+            <div class="border rounded-lg p-3 flex flex-col justify-between">
+              <div>
+                {# Imagen según categoría #}
+                {% with cat=categoria.nombre|lower %}
+                  {% if cat == "hamburguesas" %}
+                    <img src="{% static 'img/HambrugerDoble.jpeg' %}" alt="Hamburguesas"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% elif cat == "tacos" %}
+                    <img src="{% static 'img/TacoAsada.jpeg' %}" alt="Tacos"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% elif cat == "platillos" %}
+                    <img src="{% static 'img/Arrachera.jpeg' %}" alt="Platillos"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% elif cat == "bebidas" %}
+                    <img src="{% static 'img/Jamaica.jpeg' %}" alt="Bebidas"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% elif cat == "postres" %}
+                    <img src="{% static 'img/Helado.jpeg' %}" alt="Postres"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% else %}
+                    <img src="{% static 'img/Pasta.jpeg' %}" alt="Producto"
+                         class="w-full h-32 object-cover rounded mb-2">
+                  {% endif %}
+                {% endwith %}
+
+                <h3 class="font-medium">{{ producto.nombre }}</h3>
+                {% if producto.descripcion %}
+                <p class="text-xs text-gray-500 mt-1">{{ producto.descripcion }}</p>
+                {% endif %}
+              </div>
+              <div class="mt-3 flex items-center justify-between">
+                <span class="font-semibold">S/ {{ producto.precio }}</span>
+                <form action="{% url 'add_to_cart' producto.id %}" method="post">
+                  {% csrf_token %}
+                  <button class="px-3 py-1 text-xs font-semibold rounded bg-orange-500 text-white">
+                    Agregar
+                  </button>
+                </form>
+              </div>
+            </div>
+            {% empty %}
+            <p class="text-sm text-gray-500">No hay productos en esta categoría.</p>
+            {% endfor %}
+          </div>
+        </div>
+        {% endfor %}
+      </section>
+
+      <!-- Resumen del carrito -->
+      <aside class="bg-white rounded-2xl p-4 shadow h-fit">
+        <h2 class="text-lg font-semibold mb-3">Pedido actual</h2>
+        {% if cart %}
+          <ul class="text-sm space-y-1">
+            {% for pid, data in cart.items %}
+              <li class="flex justify-between">
+                <span>{{ data.nombre }} x{{ data.cantidad }}</span>
+                <span>S/ {{ data.precio|floatformat:2 }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+          <div class="mt-4 flex justify-between">
+            <a href="{% url 'comandas' %}" class="text-xs text-blue-600 hover:underline">Ver detalle</a>
+          </div>
+        {% else %}
+          <p class="text-sm text-gray-500">Todavía no has agregado productos.</p>
+        {% endif %}
+      </aside>
+    </main>
+  </div>
+</body>
+</html>
